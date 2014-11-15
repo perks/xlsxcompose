@@ -4,16 +4,16 @@ from xlutils.copy import copy
 from xlrd import open_workbook
 import xlsxwriter
 
-def compose(input, output, start_row, end_row, mappings):
+def compose(input, output, start_row, end_row, mappings, ss, ts):
 
     START_ROW = int(start_row) + 1
     END_ROW = int(end_row) or False
 
     rb = open_workbook(input)
-    r_sheet = rb.sheet_by_name("CLEAN")
+    r_sheet = rb.sheet_by_name(ss)
 
     workbook = xlsxwriter.Workbook(output)
-    worksheet = workbook.add_worksheet("Clients")
+    worksheet = workbook.add_worksheet(ts)
 
     columns = {}
 
@@ -79,13 +79,25 @@ if __name__ == '__main__':
             help='File with map configurations inform of TargetCol=OriginalCol',
             required=True
         )
+    parser.add_argument(
+            '-ss',
+            '--sourcesheet',
+            help='Sheet reference in original workbook (Default=Sheet1)',
+            default='Sheet1'
+        )
+    parser.add_argument(
+            '-ts',
+            '--targetsheet',
+            help='Target name of sheet in workbook (Default=Sheet1)',
+            default='Sheet1'
+        )
 
     args = parser.parse_args()
 
     try:
         lines = [line.strip() for line in open(args.mappings)]
         mappings = [tuple(mapping.split("=")) for mapping in lines if mapping.split("=")[1]]
-        compose(args.input, args.output, args.start, args.end, mappings)
+        compose(args.input, args.output, args.start, args.end, mappings, args.sourcesheet, args.targetsheet)
     except Exception,e:
         print "Error parsing your column mappings"
         print e

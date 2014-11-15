@@ -24,7 +24,10 @@ from one sheet to another
 
 ###Usage:
 ```zsh
-usage: xlsxcompose.py [-h] -i INPUT [-o OUTPUT] [-s START] [-e END] -m MAPPINGS
+usage: xlsxcompose.py [-h] -i INPUT [-o OUTPUT] [-s START] [-e END] -m
+                      MAPPINGS [-ss SOURCESHEET] [-ts TARGETSHEET]
+
+Migrate columns from one spreadsheet to columns in a new spreadsheet.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -38,6 +41,10 @@ optional arguments:
   -m MAPPINGS, --mappings MAPPINGS
                         File with map configurations inform of
                         TargetCol=OriginalCol
+  -ss SOURCESHEET, --sourcesheet SOURCESHEET
+                        Sheet reference in original workbook (Default=Sheet1)
+  -ts TARGETSHEET, --targetsheet TARGETSHEET
+                        Target name of sheet in workbook (Default=Sheet1)
 ```
 
 ## Example configuration file:
