@@ -4,11 +4,13 @@ __author__ = 'perks'
 from xlutils.copy import copy
 from xlrd import open_workbook
 import xlsxwriter
+import sys
+import traceback
 
 def compose(input, output, start_row, end_row, mappings, ss, ts):
 
-    START_ROW = int(start_row) + 1
-    END_ROW = int(end_row) or False
+    START_ROW = start_row 
+    END_ROW = end_row
 
     rb = open_workbook(input)
     r_sheet = rb.sheet_by_name(ss)
@@ -28,12 +30,12 @@ def compose(input, output, start_row, end_row, mappings, ss, ts):
             col_head = col_values[0]
 
             if orig_header == col_head:
-                migrate_col = [target_header] + (col_values[START_ROW:END_ROW] if END_ROW else col_values[START_ROW:])
-                columns.update({target_header: migrate_col})
+                columns.update({target_header: col_values})
                 break
 
         if columns.has_key(target_header):
-            for row_index, cell in enumerate(columns[target_header]):
+            write_col = [target_header] + (columns[target_header][START_ROW:END_ROW] if END_ROW else columns[target_header][START_ROW:])
+            for row_index, cell in enumerate(write_col):
                 cell_write(worksheet, row_index, col_index, cell)
         else:
             cell_write(worksheet, 0, col_index, target_header)
@@ -66,13 +68,15 @@ if __name__ == '__main__':
             '-s',
             '--start',
             help='Starting row number (Default = 0)',
+            type=int,
             default=0
         )
     parser.add_argument(
             '-e',
             '--end',
             help='Final row number (Default = all rows)',
-            default=None
+            type=int,
+            default=0
         )
     parser.add_argument(
             '-m',
@@ -100,8 +104,7 @@ if __name__ == '__main__':
         mappings = [tuple(mapping.split("=")) for mapping in lines if mapping.split("=")[1]]
         compose(args.input, args.output, args.start, args.end, mappings, args.sourcesheet, args.targetsheet)
     except Exception,e:
-        print "Error parsing your column mappings"
-        print e
+        print traceback.format_exc()
 
 
     print "Succesfull composition:\n\t {} => {}".format(args.input, args.output)
