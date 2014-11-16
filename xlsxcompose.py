@@ -47,9 +47,9 @@ def compose(input, output, start_row, end_row, mappings, ss, ts, limit):
             if columns.has_key(target_header):
                 write_col = [target_header] + (columns[target_header][START_ROW:END_ROW] if END_ROW else columns[target_header][START_ROW:])
                 for row_index, cell in enumerate(write_col):
-                    cell_write(worksheet, row_index, col_index, cell)
+                    worksheet.write(row_index, col_index, cell)
             else:
-                cell_write(worksheet, 0, col_index, target_header)
+                worksheet.write( 0, col_index, target_header)
 
         workbook.close()
         if (START_ROW < limit):
@@ -57,9 +57,6 @@ def compose(input, output, start_row, end_row, mappings, ss, ts, limit):
             END_ROW += end_row
         else:
             loop_cond = False
-
-def cell_write(sheet,row_index, col_index, value):
-        sheet.write(row_index, col_index, value)
 
 if __name__ == '__main__':
 
