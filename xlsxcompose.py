@@ -123,11 +123,11 @@ if __name__ == '__main__':
         lines = [line.strip() for line in open(args.mappings)]
         mappings = [tuple(mapping.split("=")) for mapping in lines if mapping.split("=")[1]]
         compose(args.input, args.output, args.start, args.end, mappings, args.sourcesheet, args.targetsheet, args.limit)
+        print "Successful composition:\n\t {} => {}".format(args.input, args.output)
     except Exception,e:
         print traceback.format_exc()
 
 
-    print "Succesfull composition:\n\t {} => {}".format(args.input, args.output)
 
 
 
