@@ -7,7 +7,7 @@ import xlsxwriter
 import sys
 import traceback
 
-def compose(input, output, start_row, end_row, mappings, ss, ts):
+def compose(input, output, start_row, end_row, mappings, ss, ts, limit):
 
     START_ROW = start_row 
     END_ROW = end_row
@@ -34,10 +34,9 @@ def compose(input, output, start_row, end_row, mappings, ss, ts):
                 break
 
 
-    count = 0
-    while (count < 3):
-        print "top loop"
-        file_name = "{}_{}".format(count , output)
+    loop_cond = True
+    while (loop_cond):
+        file_name = ("{}_{}".format(START_ROW , output) if limit else output)
         workbook = xlsxwriter.Workbook(file_name)
         worksheet = workbook.add_worksheet(ts)
 
@@ -53,7 +52,11 @@ def compose(input, output, start_row, end_row, mappings, ss, ts):
                 cell_write(worksheet, 0, col_index, target_header)
 
         workbook.close()
-        count += 1
+        if (START_ROW < limit):
+            START_ROW = END_ROW
+            END_ROW += end_row
+        else:
+            loop_cond = False
 
 def cell_write(sheet,row_index, col_index, value):
         sheet.write(row_index, col_index, value)
@@ -92,6 +95,13 @@ if __name__ == '__main__':
             default=0
         )
     parser.add_argument(
+            '-l',
+            '--limit',
+            help='Final row number to step over interval of --start to --end',
+            type=int,
+            default=0
+        )
+    parser.add_argument(
             '-m',
             '--mappings', 
             help='File with map configurations inform of TargetCol=OriginalCol',
@@ -115,7 +125,7 @@ if __name__ == '__main__':
     try:
         lines = [line.strip() for line in open(args.mappings)]
         mappings = [tuple(mapping.split("=")) for mapping in lines if mapping.split("=")[1]]
-        compose(args.input, args.output, args.start, args.end, mappings, args.sourcesheet, args.targetsheet)
+        compose(args.input, args.output, args.start, args.end, mappings, args.sourcesheet, args.targetsheet, args.limit)
     except Exception,e:
         print traceback.format_exc()
 

@@ -18,14 +18,12 @@ from one sheet to another
 
 * Python 2.7 >=
   * [xlrd](https://github.com/python-excel/xlrd)
-  * [xlwt](https://github.com/python-excel/xlwt)
-  * [xlutils](https://github.com/python-excel/xlutils)
   * [xlsxwriter](https://xlsxwriter.readthedocs.org/index.html)
 
 ###Usage:
 ```zsh
-usage: xlsxcompose.py [-h] -i INPUT [-o OUTPUT] [-s START] [-e END] -m
-                      MAPPINGS [-ss SOURCESHEET] [-ts TARGETSHEET]
+usage: xlsxcompose.py [-h] -i INPUT [-o OUTPUT] [-s START] [-e END] [-l LIMIT]
+                      -m MAPPINGS [-ss SOURCESHEET] [-ts TARGETSHEET]
 
 Migrate columns from one spreadsheet to columns in a new spreadsheet.
 
@@ -38,6 +36,9 @@ optional arguments:
   -s START, --start START
                         Starting row number (Default = 0)
   -e END, --end END     Final row number (Default = all rows)
+  -l LIMIT, --limit LIMIT
+                        Final row number to step over interval of --start to
+                        --end
   -m MAPPINGS, --mappings MAPPINGS
                         File with map configurations inform of
                         TargetCol=OriginalCol
