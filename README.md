@@ -12,15 +12,15 @@ from one sheet to another
 
 ---
 
-###Documentation
+### Documentation
 
-####Dependencies:
+#### Dependencies:
 
 * Python 2.7 >=
   * [xlrd](https://github.com/python-excel/xlrd)
   * [xlsxwriter](https://xlsxwriter.readthedocs.org/index.html)
 
-###Usage:
+### Usage:
 ```zsh
 usage: xlsxcompose.py [-h] -i INPUT [-o OUTPUT] [-s START] [-e END] [-l LIMIT]
                       -m MAPPINGS [-ss SOURCESHEET] [-ts TARGETSHEET]
@@ -53,8 +53,6 @@ optional arguments:
 ```
 First Name=Guest First Name
 Last Name=Guest Last Name
-Status (VIP, PROMO, or 86)=NONE
-Gender (MALE or FEMALE)=NONE
 Phone Number=Mobile Phone
 Phone Number Locale (US or INTL)=NONE
 Work Phone Nuber=Home Phone
